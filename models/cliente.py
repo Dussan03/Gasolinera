@@ -21,7 +21,17 @@ class Cliente:
     def existe_ci(ci):
         db = Database()
         try:
-            cursor = db.execute_query("SELECT id FROM clientes WHERE ci = %s", (ci,))
-            return cursor.fetchone() is not None
+            resultado = db.fetch_one("SELECT id FROM clientes WHERE ci = %s", (ci,))
+            return resultado is not None
+        finally:
+            db.close()
+
+    @staticmethod
+    def obtener_por_ci(ci):
+        db = Database()
+        try:
+            return db.fetch_one(
+                "SELECT id, ci, nombre, apellido FROM clientes WHERE ci = %s",
+                (ci,))
         finally:
             db.close()

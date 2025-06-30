@@ -6,14 +6,25 @@ class Database:
         self.connection = mysql.connector.connect(**DB_CONFIG)
         self.cursor = self.connection.cursor(dictionary=True)
     
-    def execute_query(self, query, params=None):
+    def execute_query(self, query, params=None, fetch=False):
         self.cursor.execute(query, params or ())
         self.connection.commit()
+        if fetch:
+            return self.cursor.fetchall()
         return self.cursor
     
+    def fetch_one(self, query, params=None):
+        self.cursor.execute(query, params or ())
+        return self.cursor.fetchone()
+    
     def close(self):
-        self.cursor.close()
-        self.connection.close()
+        try:
+            self.cursor.fetchall()
+        except mysql.connector.errors.InterfaceError:
+            pass  
+        finally:
+            self.cursor.close()
+            self.connection.close()
 
     def create_tables(self):
         # Tabla de clientes
