@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Bienvenido a la Gasolinera App</h2>
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('cliente.registrar') }}">Registrar Cliente</a></li>
-        </ul>
-    </nav>
+<h2>Bienvenido a la Gasolinera App</h2>
+<nav>
+    <ul>
+        <li><a href="{{ url_for('cliente.registrar') }}">Registrar Cliente</a></li>
+        <li><a href="{{ url_for('verificacion.verificar') }}">Verificar Cliente</a></li>
+        <li><a href="{{ url_for('admin.panel_admin') }}">Administrador</a></li>
+    </ul>
+</nav>
 {% endblock %}
