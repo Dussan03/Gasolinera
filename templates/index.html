@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Bienvenido a la Gasolinera App</h2>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('cliente.registrar') }}">Registrar Cliente</a></li>
+        </ul>
+    </nav>
+{% endblock %}
