@@ -32,8 +32,12 @@ class Registro:
     def obtener_todos_registros():
         db = Database()
         try:
-            print("Ejecutando consulta de registros...")  # Debug
-            query = """
+            connection = db.connection
+            if not connection.is_connected():
+                connection.ping(reconnect=True, attempts=3, delay=5)
+            with connection.cursor(dictionary=True) as cursor:
+                print("Ejecutando consulta de registros...")
+                cursor.execute("""
                 SELECT 
                     c.ci AS ci, 
                     c.nombre AS nombre, 
@@ -42,12 +46,12 @@ class Registro:
                 FROM registros r
                 JOIN clientes c ON r.cliente_id = c.id
                 ORDER BY r.fecha DESC
-            """
-            registros = db.execute_query(query, fetch=True)
-            print(f"Registros obtenidos: {registros}")  # Debug
-            return registros if registros else [] 
+                """)
+                registros = cursor.fetchall()  # <--- muy importante
+                connection.close()
+            return registros
         except Exception as e:
-            print(f"Error al obtener registros: {str(e)}")  # Debug detallado
+            print("Error al obtener registros:", e)
             return []
         finally:
             db.close()
