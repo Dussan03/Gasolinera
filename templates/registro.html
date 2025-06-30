@@ -1,17 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Registrar Nuevo Cliente</h2>
-<form method="POST">
-    <label for="ci">Cédula de Identidad:</label>
-    <input type="text" id="ci" name="ci" required>
-    
-    <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" name="nombre" required>
-    
-    <label for="apellido">Apellido:</label>
-    <input type="text" id="apellido" name="apellido" required>
-    
-    <button type="submit">Registrar</button>
-</form>
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h2 class="h4 mb-0">Registrar Nuevo Cliente</h2>
+    </div>
+    <div class="card-body">
+        <form method="POST" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="ci" class="form-label">Cédula de Identidad:</label>
+                <input type="text" class="form-control" id="ci" name="ci" required>
+                <div class="invalid-feedback">
+                    Por favor ingrese la cédula
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre:</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                <div class="invalid-feedback">
+                    Por favor ingrese el nombre
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="apellido" class="form-label">Apellido:</label>
+                <input type="text" class="form-control" id="apellido" name="apellido" required>
+                <div class="invalid-feedback">
+                    Por favor ingrese el apellido
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Registrar</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

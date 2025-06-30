@@ -1,38 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Panel de Administración</h2>
-
-<!-- Debug: Mostrar estructura de datos -->
-<div style="display: none;">  <!-- Oculta esto en producción -->
-    <h3>Datos en bruto:</h3>
-    <pre>{{ registros|tojson|safe }}</pre>
+<div class="card shadow">
+    <div class="card-header bg-dark text-white">
+        <h2 class="h4 mb-0">Panel de Administración</h2>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if registros %}
+                        {% for registro in registros %}
+                        <tr>
+                            <td>{{ registro.ci }}</td>
+                            <td>{{ registro.nombre }}</td>
+                            <td>{{ registro.apellido }}</td>
+                            <td>{{ registro.fecha.strftime('%Y-%m-%d %H:%M') if registro.fecha else '' }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">No hay registros disponibles</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Cédula</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Fecha</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% if registros %}
-            {% for registro in registros %}
-            <tr>
-                <td>{{ registro.ci }}</td>
-                <td>{{ registro.nombre }}</td>
-                <td>{{ registro.apellido }}</td>
-                <td>{{ registro.fecha }}</td>
-            </tr>
-            {% endfor %}
-        {% else %}
-            <tr>
-                <td colspan="4" class="text-center">No hay registros</td>
-            </tr>
-        {% endif %}
-    </tbody>
-</table>
 {% endblock %}

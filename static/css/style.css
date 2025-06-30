@@ -1,35 +1,28 @@
-.flash {
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.flash.error {
-    background-color: #ffdddd;
-    border-left: 5px solid #f44336;
+main {
+    flex: 1;
 }
 
-.flash.success {
-    background-color: #ddffdd;
-    border-left: 5px solid #4CAF50;
+.card {
+    border: none;
+    border-radius: 0.5rem;
 }
 
-.flash.warning {
-    background-color: #fff3cd;
-    border-left: 5px solid #ffc107;
+.table {
+    margin-bottom: 0;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+.table-responsive {
+    border-radius: 0.5rem;
+    overflow: hidden;
 }
 
-th, td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-th {
-    background-color: #f2f2f2;
+/* Animación para los alerts */
+.alert {
+    transition: all 0.3s ease;
 }

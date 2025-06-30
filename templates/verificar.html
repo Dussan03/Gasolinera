@@ -1,28 +1,34 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Verificar Cliente</h2>
-<form method="POST">
-    <label for="ci">Cédula de Identidad:</label>
-    <input type="text" id="ci" name="ci" required>
-    <button type="submit">Verificar</button>
-</form>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h2 class="h4 mb-0">Verificar Cliente</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" class="mb-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="ci" name="ci" placeholder="Cédula de Identidad" required>
+                        <button class="btn btn-primary" type="submit">Verificar</button>
+                    </div>
+                </form>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <div class="flash-messages">
-            {% for category, message in messages %}
-                <div class="flash {{ category }}">{{ message }}</div>
-            {% endfor %}
+                {% if cliente %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Información del Cliente</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>CI:</strong> {{ cliente.ci }}</li>
+                            <li class="list-group-item"><strong>Nombre:</strong> {{ cliente.nombre }}</li>
+                            <li class="list-group-item"><strong>Apellido:</strong> {{ cliente.apellido }}</li>
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
         </div>
-    {% endif %}
-{% endwith %}
-
-{% if cliente %}
-<div class="resultado">
-    <h3>Información del Cliente:</h3>
-    <p>CI: {{ cliente.ci }}</p>
-    <p>Nombre: {{ cliente.nombre }} {{ cliente.apellido }}</p>
+    </div>
 </div>
-{% endif %}
 {% endblock %}

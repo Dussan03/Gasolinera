@@ -1,12 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Bienvenido a la Gasolinera App</h2>
-<nav>
-    <ul>
-        <li><a href="{{ url_for('cliente.registrar') }}">Registrar Cliente</a></li>
-        <li><a href="{{ url_for('verificacion.verificar') }}">Verificar Cliente</a></li>
-        <li><a href="{{ url_for('admin.panel_admin') }}">Administrador</a></li>
-    </ul>
-</nav>
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8 text-center">
+        <h1 class="display-4 mb-4">Bienvenido a Gasolinera App</h1>
+        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+            <a href="{{ url_for('cliente.registrar') }}" class="btn btn-primary btn-lg px-4 gap-3">
+                Registrar Cliente
+            </a>
+            <a href="{{ url_for('verificacion.verificar') }}" class="btn btn-success btn-lg px-4">
+                Verificar Cliente
+            </a>
+            <a href="{{ url_for('admin.panel_admin') }}" class="btn btn-dark btn-lg px-4">
+                Administrador
+            </a>
+        </div>
+    </div>
+</div>
 {% endblock %}
