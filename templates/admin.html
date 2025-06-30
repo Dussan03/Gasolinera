@@ -2,24 +2,37 @@
 
 {% block content %}
 <h2>Panel de Administración</h2>
-<table>
+
+<!-- Debug: Mostrar estructura de datos -->
+<div style="display: none;">  <!-- Oculta esto en producción -->
+    <h3>Datos en bruto:</h3>
+    <pre>{{ registros|tojson|safe }}</pre>
+</div>
+
+<table class="table">
     <thead>
         <tr>
-            <th>CI</th>
+            <th>Cédula</th>
             <th>Nombre</th>
             <th>Apellido</th>
             <th>Fecha</th>
         </tr>
     </thead>
     <tbody>
-        {% for registro in registros %}
-        <tr>
-            <td>{{ registro.ci }}</td>
-            <td>{{ registro.nombre }}</td>
-            <td>{{ registro.apellido }}</td>
-            <td>{{ registro.fecha }}</td>
-        </tr>
-        {% endfor %}
+        {% if registros %}
+            {% for registro in registros %}
+            <tr>
+                <td>{{ registro.ci }}</td>
+                <td>{{ registro.nombre }}</td>
+                <td>{{ registro.apellido }}</td>
+                <td>{{ registro.fecha.strftime('%Y-%m-%d %H:%M') if registro.fecha else '' }}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="4" class="text-center">No hay registros</td>
+            </tr>
+        {% endif %}
     </tbody>
 </table>
 {% endblock %}

@@ -5,5 +5,9 @@ admin_bp = Blueprint('admin', __name__)
 
 @admin_bp.route('/admin')
 def panel_admin():
-    registros = Registro.obtener_todos_registros()
-    return render_template('admin.html', registros=registros)
+    try:
+        registros = Registro.obtener_todos_registros()
+        return render_template('admin.html', registros=registros)
+    except Exception as e:
+        print(f"Error en panel de administración: {e}")
+        return render_template('admin.html', registros=[])

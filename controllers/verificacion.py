@@ -12,13 +12,14 @@ def verificar():
         
         if not cliente:
             flash('Cliente no encontrado', 'error')
-            return render_template('verificar.html')
-        
-        if Registro.verificar_uso_diario(cliente['id']):
-            flash('Este cliente ya usó el servicio hoy', 'warning')
         else:
-            Registro.registrar_uso(cliente['id'])
-            flash('Cliente verificado exitosamente', 'success')
+            if Registro.verificar_uso_diario(cliente['id']):
+                flash('Este cliente ya usó el servicio hoy', 'warning')
+            else:
+                if Registro.registrar_uso(cliente['id']):
+                    flash('Cliente verificado exitosamente', 'success')
+                else:
+                    flash('Error al registrar el uso', 'error')
         
         return render_template('verificar.html', cliente=cliente)
     

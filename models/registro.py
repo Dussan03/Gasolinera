@@ -1,6 +1,5 @@
 from models.database import Database
 from datetime import datetime
-import mysql.connector
 
 class Registro:
     @staticmethod
@@ -8,10 +7,9 @@ class Registro:
         db = Database()
         try:
             hoy = datetime.now().date()
-            cursor = db.execute_query(
+            return db.fetch_one(
                 "SELECT id FROM registros WHERE cliente_id = %s AND fecha = %s",
                 (cliente_id, hoy))
-            return cursor.fetchone() is not None
         finally:
             db.close()
 
@@ -24,7 +22,7 @@ class Registro:
                 "INSERT INTO registros (cliente_id, fecha) VALUES (%s, %s)",
                 (cliente_id, hoy))
             return True
-        except mysql.connector.Error as err:
+        except Exception as err:
             print(f"Error al registrar uso: {err}")
             return False
         finally:
@@ -34,12 +32,22 @@ class Registro:
     def obtener_todos_registros():
         db = Database()
         try:
-            cursor = db.execute_query("""
-                SELECT c.ci, c.nombre, c.apellido, r.fecha 
+            print("Ejecutando consulta de registros...")  # Debug
+            query = """
+                SELECT 
+                    c.ci AS ci, 
+                    c.nombre AS nombre, 
+                    c.apellido AS apellido, 
+                    r.fecha AS fecha
                 FROM registros r
                 JOIN clientes c ON r.cliente_id = c.id
                 ORDER BY r.fecha DESC
-            """)
-            return cursor.fetchall()
+            """
+            registros = db.execute_query(query, fetch=True)
+            print(f"Registros obtenidos: {registros}")  # Debug
+            return registros if registros else [] 
+        except Exception as e:
+            print(f"Error al obtener registros: {str(e)}")  # Debug detallado
+            return []
         finally:
             db.close()

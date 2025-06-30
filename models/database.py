@@ -10,7 +10,15 @@ class Database:
         self.cursor.execute(query, params or ())
         self.connection.commit()
         if fetch:
-            return self.cursor.fetchall()
+            try:
+                # Obtenemos todos los resultados inmediatamente
+                results = self.cursor.fetchall()
+                # Consumimos cualquier resultado adicional (por si acaso)
+                while self.cursor.nextset():
+                    pass
+                return results
+            except mysql.connector.errors.InterfaceError:
+                return []
         return self.cursor
     
     def fetch_one(self, query, params=None):
