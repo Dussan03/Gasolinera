@@ -4,32 +4,45 @@ from config import DB_CONFIG
 class Database:
     def __init__(self):
         self.connection = mysql.connector.connect(**DB_CONFIG)
-        self.cursor = self.connection.cursor(dictionary=True)
+        self.cursor = self.connection.cursor(dictionary=True, buffered=True)
     
     def execute_query(self, query, params=None, fetch=False):
-        self.cursor.execute(query, params or ())
-        self.connection.commit()
-        if fetch:
-            try:
-                # Obtenemos todos los resultados inmediatamente
-                results = self.cursor.fetchall()
-                # Consumimos cualquier resultado adicional (por si acaso)
+        try:
+            self.cursor.execute(query, params or ())
+            
+            if fetch:
+                result = self.cursor.fetchall()
+                # Limpiar cualquier resultado adicional
                 while self.cursor.nextset():
                     pass
-                return results
-            except mysql.connector.errors.InterfaceError:
-                return []
-        return self.cursor
+                return result
+            return True
+            
+        except mysql.connector.Error as err:
+            print(f"Database error: {err}")
+            raise
+        finally:
+            self.connection.commit()
     
     def fetch_one(self, query, params=None):
-        self.cursor.execute(query, params or ())
-        return self.cursor.fetchone()
+        try:
+            self.cursor.execute(query, params or ())
+            result = self.cursor.fetchone()
+            # Limpiar resultados pendientes
+            while self.cursor.nextset():
+                pass
+            return result
+        except mysql.connector.Error as err:
+            print(f"Database error: {err}")
+            raise
     
     def close(self):
         try:
-            self.cursor.fetchall()
-        except mysql.connector.errors.InterfaceError:
-            pass  
+            # Limpiar cualquier resultado pendiente
+            while self.cursor.nextset():
+                pass
+        except:
+            pass
         finally:
             self.cursor.close()
             self.connection.close()

@@ -2,29 +2,70 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-lg-8">
         <div class="card shadow">
             <div class="card-header bg-info text-white">
-                <h2 class="h4 mb-0">Verificar Cliente</h2>
+                <h2 class="h4 mb-0">Verificación de Cliente</h2>
             </div>
             <div class="card-body">
                 <form method="POST" class="mb-4">
                     <div class="input-group">
-                        <input type="text" class="form-control" id="ci" name="ci" placeholder="Cédula de Identidad" required>
-                        <button class="btn btn-primary" type="submit">Verificar</button>
+                        <input type="text" class="form-control" name="ci" placeholder="Cédula" required>
+                        <button type="submit" class="btn btn-primary">Buscar</button>
                     </div>
                 </form>
 
                 {% if cliente %}
-                <div class="card mb-3">
+                <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title">Información del Cliente</h5>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><strong>CI:</strong> {{ cliente.ci }}</li>
-                            <li class="list-group-item"><strong>Nombre:</strong> {{ cliente.nombre }}</li>
-                            <li class="list-group-item"><strong>Apellido:</strong> {{ cliente.apellido }}</li>
-                        </ul>
+                        <h4 class="card-title">Información del Cliente</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Cédula:</strong> {{ cliente.ci }}</p>
+                                <p><strong>Nombre:</strong> {{ cliente.nombre }} {{ cliente.apellido }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <form method="POST">
+                                    <input type="hidden" name="ci" value="{{ cliente.ci }}">
+                                    <button type="submit" name="accion" value="marcar_uso" 
+                                            class="btn btn-success w-100">
+                                        Marcar Carga de Hoy
+                                    </button>
+                                    <small class="text-muted">Límite: 2 cargas por semana</small>
+                                </form>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <h4 class="mb-3">Historial de Cargas</h4>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Vehículo</th>
+                                <th>Estado</th>
+                                <th>Semana</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for registro in historial %}
+                            <tr>
+                                <td>{{ registro.fecha.strftime('%d/%m/%Y') }}</td>
+                                <td>{{ registro.marca }} {{ registro.modelo }} ({{ registro.placa }})</td>
+                                <td>
+                                    {% if registro.usado %}
+                                        <span class="badge bg-success">Usado</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Registrado</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ registro.semana }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
                 {% endif %}
             </div>

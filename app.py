@@ -4,7 +4,7 @@ from controllers.verificacion import verificacion_bp
 from controllers.admin import admin_bp
 
 app = Flask(__name__)
-app.secret_key = 'tu_clave_secreta_aqui'  # Necesario para flash messages
+app.secret_key = 'Dussan 7562' 
 
 app.register_blueprint(cliente_bp, url_prefix='/cliente')
 app.register_blueprint(verificacion_bp, url_prefix='/verificacion')
